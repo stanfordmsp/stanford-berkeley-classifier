@@ -102,6 +102,7 @@ $(function() {
   // $("input#urlId").val("https://southcentralus.api.cognitive.microsoft.com/customvision/v1.1/Prediction/51655126-47a9-4148-a9a3-165b48668fbb/url?iterationId=d6ece231-e2bd-419e-898b-6f448774094b");
   // $("input#predictionKey").val("30d2b3de6c4642e0be643f90995d7b66");
   $("#submitBtn").click(function() {
+    $(this).attr("disabled", "disabled");
     $("#loading").show();
     let scores = [];
     let endpoint = $("input#urlId").val();
@@ -109,7 +110,7 @@ $(function() {
     let name = $("#name").val();
     let email = $("#email").val();
     if (!name || !email)
-      {alert("Fill out your name and email"); $("#loading").hide(); return;}
+      {alert("Fill out your name and email"); $(this).removeAttr("disabled"); $("#loading").hide(); return;}
     submitResults(name, email, 0);
     let queue = [];
     let predictions = {};
