@@ -43,10 +43,12 @@ display: none;
 </style>
 
 <body>
-Enter your url here:
+Enter your url here:<br/>
 
 URL: <input type="url" id="urlId" value="" placeholder="url" />
 <br />Prediction key: <input type="text" id="predictionKey" placeholder="prediction key" />
+<br />Name <input type="text" id="name" placeholder="name" />
+<br />Email <input type="text" id="email" placeholder="email" />
 <br/>
 <button type="button" id="submitBtn">Score</button>
 <br />
@@ -102,7 +104,11 @@ $(function() {
     let scores = [];
     let endpoint = $("input#urlId").val();
     let predictionKey  = $("input#predictionKey").val();
-    let imgUrl = "https://user-images.githubusercontent.com/1689183/38527843-be015626-3c11-11e8-9889-b2fe455b66c9.jpg";
+    let name = $("#name").val();
+    let email = $("#email").val();
+    if (!name || !email)
+      {alert("Fill out your name and email"); $("#loading").hide(); return;}
+    submitResults(name, email, 0);
     let queue = [];
     let predictions = {};
     let correctOrNot = {};
@@ -149,12 +155,18 @@ $(function() {
       $("#results").append(`<br><b>TOTAL: ${correct} out of ${total}</b>`);
       let accuracy = correct / total * 100.0;
       $("#results").append(`<br><h3>FINAL ACCURACY: ${accuracy}%</h3>`);
-      
+      submitResults(name, email, accuracy);
+
       // console.log(predictions, correctOrNot);
-      $("#loading").hide();
+
     }
   });
 })
+function submitResults(name, email, score) {
+        $.get(`https://hooks.zapier.com/hooks/catch/3152671/f255u0/?Name=${name}&Email=${email}&Score=${score}`).done(e => {
+              $("#loading").hide();
+      })      
+}
 </script>
 
 </body>
